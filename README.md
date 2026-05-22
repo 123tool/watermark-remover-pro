@@ -18,6 +18,23 @@ This tool utilizes low-level pixel manipulation algorithms to detect, isolate, a
 
 ---
 
+## 💻 Internal Codebase API Documentation
+​The core engine in app.js exposes several crucial operational pipelines :
+
+​1. handleFile(file)
+- ​Description : Validates incoming file blobs, instantiates the local binary FileReader stream, and pipes data into the graphics layer.
+- ​Parameters : file (Blob/File object).
+
+2. ​setupWorkspace()
+- ​Description : Extracts natural asset dimensions. Configures lossless 1:1 canvas scales across all 3 visual contexts to prevent blur or pixel-stretching during cross-layer readbacks.
+
+3. ​saveHistoryState()
+- ​Description : Captures the current ImageData byte stream via ctx.getImageData(). Enforces a strict first-in, first-out (FIFO) cache eviction mechanism once memory arrays cross the MAX_HISTORY limit.
+
+4. ​executePixelInpainting()
+​Description : The primary processing pipeline. Clones the canvas state into a read-only Uint8ClampedArray to serve as a clean donor reference. Iterates through the raw canvas pixel grid, replacing masked fragments with synthesized textures on the fly.
+
+
 ## ​🔒 Privacy & Performance Guidelines
 
 - ​Privacy First : Images never leave the browser. There are no API keys, analytics tracers, or external backend connections tracking user assets.
